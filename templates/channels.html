@@ -1,0 +1,41 @@
+{% extends  'layout.html' %}
+{% block content %}
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        {% for country in country_channes.keys() %}
+            <li class="nav-item">
+                <a class="nav-link" id="country-{{ country }}-tab" data-toggle="pill" href="#country_{{ country }}"
+                   role="tab"
+                   aria-controls="pills-home">{{ pycountry.countries.get(alpha_2=country.upper()).name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+
+        {% for country, channels in country_channes.items() %}
+            <div class="tab-pane fade show " id="country_{{ country }}" role="tabpanel"
+                 aria-labelledby="country-{{ country }}-tab">
+                <div class="row">
+
+
+                    {% for channel in channels %}
+                       <div class="col-sm-3">
+                        <div class="card mb-4" >
+                            {% if channel.image != None %}
+                            <img class="card-img-top" src="{{ channel.image }}" alt="{{ channel.name }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ channel.name }}</h5>
+                                <p class="card-text">{{ channel.timezone }}</p>
+                                <a href="{{ url_for('formats', channel_id=channel.id) }}" class="btn btn-primary">View</a>
+                            </div>
+                        </div>
+                       </div>
+
+                    {% endfor %}
+                </div>
+                </ul>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
